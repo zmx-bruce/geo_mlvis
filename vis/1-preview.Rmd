@@ -1,0 +1,98 @@
+---
+title: "A First Look"
+params:
+  y_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/glaciers.geojson"
+  x_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/region.vrt"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE)
+```
+
+```{r}
+library("RStoolbox")
+library("dplyr")
+library("gdalUtils")
+library("ggplot2")
+library("raster")
+library("readr")
+library("sf")
+library("tidyr")
+source("data.R")
+theme_set(theme_bw())
+```
+
+Polygon plots.
+
+```{r}
+y <- read_sf(params$y_path) %>%
+  filter(
+    Sub_basin == "Dudh Koshi",
+    Longitude < 86.91, Longitude > 86.1,
+    Latitude < 27.81, Latitude > 27.7
+  )
+
+ggplot(y, aes(fill = Glaciers)) +
+  geom_sf() +
+  scale_fill_manual(values = c("#93b9c3", "#4e326a")) +
+  theme(legend.position = "bottom")
+```
+
+Multichannel plot.
+
+```{r}
+x <- read_subset(params$x_path, st_bbox(y))
+ggRGB(x)
+ggRGB(x, r = 5, g = 4, b = 2)
+```
+
+Overlaid multichannel.
+
+```{r}
+ggRGB(x) +
+  geom_sf(data = y, aes(fill = Glaciers))
+```
+
+Slope plot.
+
+```{r}
+slope <- subset(x, 15) %>%
+  as.data.frame(xy = TRUE)
+
+ggplot(slope, aes(x = x, y = y)) +
+  geom_raster(aes(fill = slope)) +
+  scale_fill_gradient(low = "white", high = "black") +
+  coord_fixed() +
+  scale_x_continuous(expand = c(0, 0)) + 
+  scale_y_continuous(expand = c(0, 0))
+
+rm(slope) # save space
+```
+
+Histograms.
+
+```{r}
+sample_ix <- sample(nrow(x), 100)
+x_df <- x[sample_ix, sample_ix, ] %>% # subset pixels
+  as.data.frame()
+x_longer <- x_df %>%
+  pivot_longer(cols = everything())
+
+ggplot(x_longer) +
+  geom_histogram(aes(x = value)) +
+  facet_wrap(~ name, scale = "free_x")
+```
+
+Bivariate plot.
+
+```{r}
+ggplot(x_df, aes(x = B6_VCID_1, y = B6_VCID_2, fill = log(..count..))) +
+  geom_hex(binwidth = 2) +
+  scale_fill_viridis_c() +
+  coord_fixed()
+
+ggplot(x_df %>% filter(B1 != 255, B2 != 255), aes(x = B1, y = B2, fill = log(..count..))) +
+  geom_hex(binwidth = 2) +
+  scale_fill_viridis_c() +
+  coord_fixed()
+```
