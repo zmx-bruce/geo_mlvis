@@ -27,7 +27,7 @@ prediction_paths <- function(data_dir) {
             paths[[i]] <- data.frame(
                 split = data_split,
                 type = type,
-                path = dir(file.path(params$preds_dir, data_split),  str_c("^", type, "-[0-9]+"),  full = TRUE)
+                path = dir(file.path(preds_path, data_split),  str_c("^", type, "-[0-9]+"),  full = TRUE)
             )
             i <- i + 1
         }

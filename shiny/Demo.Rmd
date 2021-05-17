@@ -1,16 +1,26 @@
 ---
-title: "Demo_TFplot_shiny"
+title: "Shiny App for prediction results"
 author: "Bruce Zheng"
 date: "3/30/2021"
 
 params:
-  geojson: "/Users/app/Desktop/Remote Sensing Presentation/vector_data/glaciers.geojson"
-  basins: "/Users/app/Desktop/Remote Sensing Presentation/Index/train_list-small (1).csv"
+  #geojson: "/Users/app/Desktop/Remote Sensing Presentation/vector_data/glaciers.geojson"
+  #basins: "/Users/app/Desktop/Remote Sensing Presentation/Index/train_list-small (1).csv"
   n_patches: 75
-  preds_dir: "/Users/app/Desktop/Remote Sensing Presentation/model/preds"
+  #preds_dir: "/Users/app/Desktop/Remote Sensing Presentation/model/preds"
 output: html_document
 ---
 ```{r}
+path<-getwd()
+iconurl<-paste(path,"/9521617427822_.pic.jpg",sep="")
+geojson_path<-paste(path,"/glaciers.geojson",sep="")
+basins_path<-paste(path,"/test_list-small.csv",sep="")
+preds_path<-paste(path,"/preds",sep="")
+
+```
+
+```{r}
+
 library(tmap)
 library(shiny)
 library(tmaptools)
@@ -54,9 +64,8 @@ theme_set(theme_minimal())
 ```
 
 ```{r}
-y_path <- file.path(params$geojson)
-basins <- read_csv(params$basins)
-basins
+y_path <- file.path(geojson_path)
+basins <- read_csv(basins_path)
 ```
 
 ```{r}
@@ -75,38 +84,15 @@ center_df$id<-c(1:nrow(centers))
 center_df$Long<-round(centers[1:nrow(centers),1],2)
 center_df$Lat<-round(centers[1:nrow(centers),2],2)
 
-paths<-prediction_paths(params$preds)
+paths<-prediction_paths(preds_path)
 ```
 
 ```{r}
 Icon <- makeIcon(
-  iconUrl = "/Users/app/Desktop/Remote Sensing Presentation/Code/Shiny app code/9521617427822_.pic.jpg",
+  iconUrl = iconurl,
   iconWidth = 10, iconHeight = 20,
   iconAnchorX = 5, iconAnchorY = 20,)
 
-#greenLeafIcon <- makeIcon(
-  #iconWidth = 38, iconHeight = 95,
-  #iconAnchorX = 22, iconAnchorY = 94,)
-
-#,clusterOptions = markerClusterOptions()
-
-```
-
-```{r}
-num<-c(unique(paths[paths$split=="test",]$ix))
-length(num)
-num=1
-x_test<-load_npy(paths[paths$split=="test"&paths$ix==2&paths$type=="x",]$path)
-y_test<-load_npy(paths[paths$split=="test"&paths$ix==2&paths$type=="y",]$path)
-ggRGB(x_test)
-ggRGB(y_test)
-x_test
-
-mean(coordinates(x_test)[,1])
-mean(coordinates(x_test)[,2])
-y <- read_sf("/Users/app/Desktop/Remote Sensing Presentation/preprocessed/train/geo-2.geojson")
-print(st_centroid(y))
-tm_shape(st_as_sf(as.data.frame(y))) + tm_polygons("Glaciers")
 ```
 
 ```{r}
@@ -146,16 +132,6 @@ ggplotly(iou)
 ```
 
 ```{r}
-# 1-tp
-#test the time
-#transparent parameter, lay mask on the image
-#add title headline
-
-#histogram and brush ,  update the markers#link visualization , interactive linking, coordinates
-
-```
-
-```{r}
 
 ui<-fluidPage(h2("Interactive Figure"),
  fluidRow(column(5, leafletOutput('Map')),column(5,plotlyOutput("curve")),column(2,  selectInput("c", "Channel", c(1,2,3))),column(2,  sliderInput("p", "Threshold Probability", value = 0.5, min = 0, max = 1))),
@@ -169,28 +145,28 @@ server<-shinyServer(function(input, output, session){
     output$Map <- renderLeaflet({
       leafmap_shp<-tmap_leaflet(tm_shape(st_as_sf(as.data.frame(y_sub))) + tm_polygons("Glaciers") + tm_facets(nrow = 1, sync = TRUE))%>% addMarkers(center_df$Long,center_df$Lat,popup=paste("ID:",center_df$id,"<br>","Longitude:", center_df$Long, "<br>","Latitude:", center_df$Lat), label =center_df$id,group = 'id', layerId = center_df$id,icon = Icon) %>% addSearchMarker('id', position = 'topleft', propertyName = center_df$id) 
       leafmap_shp})
-  
-    click<-reactive(input$Map_marker_click);id<-reactive(as.numeric(click()$id))
-    result<-reactive(paths[paths$ix==id()& paths$split=="train",])
-    y <- reactive({np$load(result()[result()$type=="y",]$path)})
-    y_hat<-reactive(np$load(result()[result()$type=="y_hat",]$path))
     
     output$curve<-renderPlotly(ggplotly(iou))
-
-
+  
+    click<-reactive(input$Map_marker_click)
+    
     
     output$grid<-renderPlot({
+        id<-ifelse(is.null(click()$id),1,click()$id)
+        result<-paths[paths$ix==id& paths$split=="train",]
+        y <- {np$load(result[result$type=="y",]$path)}
+        y_hat<-np$load(result[result$type=="y_hat",]$path)
+
         probability<-as.numeric(input$p)
         channel<-as.numeric(input$c)
         
-        x_raster<-load_npy(result()[result()$type=="x",]$path)
-        y_raster<-load_npy(result()[result()$type=="y",]$path)
+        x_raster<-load_npy(result[result$type=="x",]$path)
+        y_raster<-load_npy(result[result$type=="y",]$path)
         
-        y_m<-y();y_hat_m<-y_hat()
-        tp<-y_m[channel,,]==1&y_hat_m[channel,,]>=probability
-        fn<-y_m[channel,,]==1&y_hat_m[channel,,]<probability
-        fp<-y_m[channel,,]==0&y_hat_m[channel,,]>=probability
-        tn<-y_m[channel,,]==0&y_hat_m[channel,,]<probability
+        tp<-y[channel,,]==1&y_hat[channel,,]>=probability
+        fn<-y[channel,,]==1&y_hat[channel,,]<probability
+        fp<-y[channel,,]==0&y_hat[channel,,]>=probability
+        tn<-y[channel,,]==0&y_hat[channel,,]<probability
         result_new<-1*tp+2*fn+3*fp+4*tn
         result_r <- t(apply(result_new, 2, rev))
 
@@ -215,17 +191,11 @@ server<-shinyServer(function(input, output, session){
       p2<-plot_rgb(y_raster)
       p3<-plot_rgb(x_raster)
       p <- list(p2,p3,p1+theme(legend.position = "none"))
-      grid.arrange(p3,p2,p1+theme(legend.position = "none"),legend,layout_matrix=rbind(c(1,1,1,1,2,2,2,2,3,3,3,3,4)))})
+      grid.arrange(p3,p2,p1+theme(legend.position = "none"),legend,layout_matrix=rbind(c(1,1,1,1,2,2,2,2,3,3,3,3,4)))
+        })
 })
 
 shinyApp(ui, server)
-
-
-```
-
-```{r}
-
-
 ```
 
 
