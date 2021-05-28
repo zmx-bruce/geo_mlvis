@@ -4,11 +4,11 @@ params:
   out_dir: "processed/train"
   x_path: "/Users/app/Desktop/RemoteSensingPresentation/tiff_vrt/region-corrected.vrt" ##with corrected vrt file
   #x_path: "/Users/app/Desktop/RemoteSensingPresentation/tiff_vrt/region (1).vrt"
-  y_path: "/Users/app/Desktop/RemoteSensingPresentation/vector_data/glaciers.geojson"
-  basins: "/Users/app/Desktop/RemoteSensingPresentation/Index/train_list-small (1).csv"
+  y_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/glaciers.geojson"
+  basins: "https://uwmadison.box.com/shared/static/2ptmi9b4gt5d5vyusju5u8kn5n1s6hnd.csv"
   n_patches: 10
   #basins: "https://uwmadison.box.com/shared/static/iilcsf3bbois8tmt7pklriu219s4wlu6.csv" # for test basins
-  B: 1
+  B: 1 
 ---
 
 ```{r setup, include=FALSE}
