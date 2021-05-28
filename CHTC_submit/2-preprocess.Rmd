@@ -2,8 +2,7 @@
 title: "Data Preparation"
 params:
   out_dir: "processed/train"
-  x_path: "/Users/app/Desktop/RemoteSensingPresentation/tiff_vrt/region-corrected.vrt" ##with corrected vrt file
-  #x_path: "/Users/app/Desktop/RemoteSensingPresentation/tiff_vrt/region (1).vrt"
+  x_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/corrected/region-corrected.vrt" ##with corrected vrt file
   y_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/glaciers.geojson"
   basins: "https://uwmadison.box.com/shared/static/2ptmi9b4gt5d5vyusju5u8kn5n1s6hnd.csv"
   n_patches: 10
