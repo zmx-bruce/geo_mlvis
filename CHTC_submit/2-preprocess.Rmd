@@ -2,8 +2,8 @@
 title: "Data Preparation"
 params:
   out_dir: "processed/train"
-  #x_path: "/Users/app/Desktop/RemoteSensingPresentation/tiff_vrt/region-corrected.vrt" ##with corrected vrt file
-  x_path: "/Users/app/Desktop/RemoteSensingPresentation/tiff_vrt/region (1).vrt"
+  x_path: "/Users/app/Desktop/RemoteSensingPresentation/tiff_vrt/region-corrected.vrt" ##with corrected vrt file
+  #x_path: "/Users/app/Desktop/RemoteSensingPresentation/tiff_vrt/region (1).vrt"
   y_path: "/Users/app/Desktop/RemoteSensingPresentation/vector_data/glaciers.geojson"
   basins: "/Users/app/Desktop/RemoteSensingPresentation/Index/train_list-small (1).csv"
   n_patches: 200
