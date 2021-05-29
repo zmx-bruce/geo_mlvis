@@ -102,7 +102,7 @@ label_mask <- function(ys, x_raster) {
 #' @importFrom reticulate import
 #' @export
 write_patches <- function(x_path, ys, centers, out_dir) {
-  unlink(out_dir, force = TRUE)
+  unlink(out_dir, force = FALSE)
   dir.create(out_dir, recursive = TRUE)
 
   j <- 1
