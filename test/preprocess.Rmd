@@ -5,8 +5,9 @@ params:
   x_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/region.vrt"
   y_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/glaciers.geojson"
   basins: "https://uwmadison.box.com/shared/static/2ptmi9b4gt5d5vyusju5u8kn5n1s6hnd.csv"
-  n_patches: 200
+  n_patches: 10
   #basins: "https://uwmadison.box.com/shared/static/iilcsf3bbois8tmt7pklriu219s4wlu6.csv" # for test basins
+  B: 1 
 ---
 
 ```{r setup, include=FALSE}
@@ -33,7 +34,7 @@ use_condaenv("mappingvis")
 np <- import("numpy")
 source("data.R")
 theme_set(theme_minimal())
-set.seed(123)
+set.seed(params$B)
 ```
 
 Read geojson.
@@ -103,5 +104,7 @@ ggplot(x_df) +
 Write all results.
 
 ```{r}
+centers<-cbind(centers,c(1:params$n_patches))
+colnames(centers)<-c("Longitude","Latitude","ID")
 write_patches(vrt_path, ys, centers, params$out_dir)
 ```
