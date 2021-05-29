@@ -1,7 +1,7 @@
 ---
 title: "Data Preparation"
 params:
-  out_dir: "processed/train"
+  out_dir: "processed"
   x_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/region.vrt"
   y_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/glaciers.geojson"
   basins: "https://uwmadison.box.com/shared/static/2ptmi9b4gt5d5vyusju5u8kn5n1s6hnd.csv"
