@@ -30,12 +30,11 @@ read_subset <- function(x_path, te, band_names = NULL) {
     gdalbuildvrt(x_path, tmp, te = te)
     result <- brick(tmp)
     if (is.null(band_names)) {
-      names(result) <- c("B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "BQA", "elevation", "slope")
+      names(result) <- c("B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "BQA","elevation", "slope")
     }
     # remove outliers and return
     rmat <- cbind(-Inf, -1e8, NA)
     reclassify(result, rmat)
-    
 }
 
 #' Write patch to file
@@ -44,10 +43,7 @@ read_subset <- function(x_path, te, band_names = NULL) {
 #' @importFrom dplyr %>%
 #' @importFrom sf st_point st_buffer st_geometry st_bbox
 #' @export
-generate_patch <- function(x_path, center, max_na = 0.2, subset_inputs=NULL) {
-  if (is.null(subset_inputs)) {
-    subset_inputs <- c(1:11)
-  }
+generate_patch <- function(x_path, center, max_na = 0.2) {
 
   point <- st_point(center, dim = "XY") %>%
     st_buffer(0.1) %>%
@@ -55,7 +51,7 @@ generate_patch <- function(x_path, center, max_na = 0.2, subset_inputs=NULL) {
 
   x_raster <- read_subset(x_path, st_bbox(point))
   x <- as.array(x_raster)
-  x <- x[,, subset_inputs]
+    
   if (mean(is.na(x)) < max_na) {
     x <- impute_na(x) %>%
       equalize_input(range = c(-1, 1))
@@ -102,7 +98,7 @@ label_mask <- function(ys, x_raster) {
 #' @importFrom reticulate import
 #' @export
 write_patches <- function(x_path, ys, centers, out_dir) {
-  unlink(out_dir, force = FALSE)
+  unlink(out_dir, force = TRUE)
   dir.create(out_dir, recursive = TRUE)
 
   j <- 1
@@ -117,7 +113,6 @@ write_patches <- function(x_path, ys, centers, out_dir) {
     np$save(file.path(out_dir, str_c("y-", j, ".npy")), y)
     write_sf(patch$meta, file.path(out_dir, str_c("geo-", j, ".geojson")))
     j <- j + 1
-    
   }
 }
 
@@ -141,18 +136,3 @@ load_npy <- function(p) {
     to_raster()
 }
 
-plot_rgb <- function(x, channels=NULL, ...) {
-  if (is.null(channels)) {
-    channels <- seq_len(dim(x)[3])
-  }
-  
-  ggRGB(subset(x, channels), ...) +
-    scale_x_continuous(expand = c(0, 0)) +
-    scale_y_continuous(expand = c(0, 0)) +
-    theme(
-      axis.text = element_blank(),
-      axis.ticks = element_blank(),
-      axis.title = element_blank(),
-      plot.margin = unit(c(0, 0, 0, 0), "cm")
-    )
-}
