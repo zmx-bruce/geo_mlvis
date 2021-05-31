@@ -52,6 +52,7 @@ Get sampling locations.
 centers <- y %>%
   st_sample(params$n_patches, type = "random", by_polygon = FALSE) %>%
   st_coordinates()
+colnames(centers) <- c("Longitude", "Latitude")
 
 ```
 
