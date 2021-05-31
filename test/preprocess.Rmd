@@ -53,52 +53,10 @@ centers <- y %>%
   st_sample(params$n_patches, type = "random", by_polygon = FALSE) %>%
   st_coordinates()
 colnames(centers) <- c("Longitude", "Latitude")
-p <- ggplot(y, aes(x = Longitude, y = Latitude)) +
-  geom_sf(data = y, aes(fill = Glaciers)) +
-  geom_point(data = as.data.frame(centers), col = "red", size = 2) +
-  scale_fill_manual(values = c("#93b9c3", "#4e326a"))
-p
-```
 
-Cropped.
-
-```{r}
-p + coord_sf(xlim = c(70.7, 71.2),  ylim = c(36.2, 36.5))
-```
-Example patch.
-
-```{r}
-head(y)
-y %>%
-  filter(Longitude < 94.5, Longitude > 92.1) %>%
-  filter(Latitude > 28, Latitude < 29.9)
-```
-
-
-```{r}
 vrt_path <- file.path(params$x_path)
 ys <- y %>% split(.$Glaciers)
-patch <- generate_patch(vrt_path, centers[5, ])
-patch_y <- label_mask(ys, patch$raster)
-p <- list(
-  plot_rgb(brick(patch$x), c(5, 4, 2), r = 1, g = 2, b = 3),
-  plot_rgb(brick(patch$x), rep(13, 3)),
-  plot_rgb(brick(patch_y), r = NULL)
-)
-grid.arrange(grobs = p, ncol = 3)
-```
 
-Example histogram.
-
-```{r}
-sample_ix <- sample(nrow(patch$x), 100)
-x_df <- patch$x[sample_ix, sample_ix, ] %>%
-  brick() %>%
-  as.data.frame() %>%
-  pivot_longer(cols = everything())
-ggplot(x_df) +
-  geom_histogram(aes(x = value)) +
-  facet_wrap(~ name, scale = "free_x")
 ```
 
 Write all results.
