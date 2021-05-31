@@ -2,7 +2,7 @@
 title: "Data Preparation"
 params:
   out_dir: "processed"
-  x_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/corrected/region-corrected.vrt" ##with corrected vrt file
+  x_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/corrected/region-corrected.vrt"
   y_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/glaciers.geojson"
   basins: "https://uwmadison.box.com/shared/static/2ptmi9b4gt5d5vyusju5u8kn5n1s6hnd.csv"
   n_patches: 10
@@ -11,7 +11,6 @@ params:
 ---
 
 ```{r setup, include=FALSE}
-#new vrt only 11 layers
 rm(list=setdiff(ls(), "params"))
 knitr::opts_chunk$set(echo = TRUE, cache = FALSE, message = FALSE, warning = FALSE)
 ```
@@ -30,7 +29,6 @@ library("reticulate")
 library("sf")
 library("stringr")
 library("tidyr")
-
 # setting up python environment
 use_condaenv("mappingvis")
 np <- import("numpy")
@@ -54,11 +52,14 @@ Get sampling locations.
 centers <- y %>%
   st_sample(params$n_patches, type = "random", by_polygon = FALSE) %>%
   st_coordinates()
+
 ```
+
 
 ```{r}
 vrt_path <- file.path(params$x_path)
 ys <- y %>% split(.$Glaciers)
+
 ```
 
 Write all results.
@@ -68,6 +69,4 @@ write_patches(vrt_path, ys, centers, params$out_dir)
 centers<-cbind(centers,c(1:params$n_patches))
 colnames(centers)<-c("Longitude","Latitude","ID")
 write.csv(centers,file.path(params$out_dir, paste0("centers-", params$B, ".csv")))
-
 ```
-
