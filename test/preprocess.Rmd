@@ -104,7 +104,7 @@ ggplot(x_df) +
 Write all results.
 
 ```{r}
+write_patches(vrt_path, ys, centers, params$out_dir)
 centers<-cbind(centers,c(1:params$n_patches))
 colnames(centers)<-c("Longitude","Latitude","ID")
-write_patches(vrt_path, ys, centers, params$out_dir)
 ```
