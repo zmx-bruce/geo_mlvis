@@ -107,4 +107,5 @@ Write all results.
 write_patches(vrt_path, ys, centers, params$out_dir)
 centers<-cbind(centers,c(1:params$n_patches))
 colnames(centers)<-c("Longitude","Latitude","ID")
+write.csv(centers,file.path(params$out_dir, paste0("centers-", params$B, ".csv")))
 ```
