@@ -30,8 +30,9 @@ read_subset <- function(x_path, te, band_names = NULL) {
     gdalbuildvrt(x_path, tmp, te = te)
     result <- brick(tmp)
     if (is.null(band_names)) {
-      names(result) <- c("B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "BQA","elevation", "slope")
+      names(result) <- c("B1", "B2", "B3", "B4", "B5", "B6_VCID_1", "B6_VCID_2", "B7", "B8", "BQA", "ndvi", "ndsi", "ndwi", "elevation", "slope")
     }
+
     # remove outliers and return
     rmat <- cbind(-Inf, -1e8, NA)
     reclassify(result, rmat)
@@ -43,7 +44,10 @@ read_subset <- function(x_path, te, band_names = NULL) {
 #' @importFrom dplyr %>%
 #' @importFrom sf st_point st_buffer st_geometry st_bbox
 #' @export
-generate_patch <- function(x_path, center, max_na = 0.2) {
+generate_patch <- function(x_path, center, max_na = 0.2, subset_inputs=NULL) {
+  if (is.null(subset_inputs)) {
+    subset_inputs <- c(1:5, 7:9, 11:15)
+  }
 
   point <- st_point(center, dim = "XY") %>%
     st_buffer(0.1) %>%
@@ -51,7 +55,7 @@ generate_patch <- function(x_path, center, max_na = 0.2) {
 
   x_raster <- read_subset(x_path, st_bbox(point))
   x <- as.array(x_raster)
-    
+  x <- x[,, subset_inputs]
   if (mean(is.na(x)) < max_na) {
     x <- impute_na(x) %>%
       equalize_input(range = c(-1, 1))
@@ -135,4 +139,3 @@ load_npy <- function(p) {
   np$load(p) %>%
     to_raster()
 }
-
