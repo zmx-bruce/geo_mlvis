@@ -2,7 +2,7 @@
 title: "Data Preparation"
 params:
   out_dir: "processed"
-  x_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/region.vrt"
+  x_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/corrected/region-corrected.vrt"
   y_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/glaciers.geojson"
   basins: "https://uwmadison.box.com/shared/static/2ptmi9b4gt5d5vyusju5u8kn5n1s6hnd.csv"
   n_patches: 10
@@ -32,7 +32,7 @@ library("tidyr")
 # setting up python environment
 use_condaenv("mappingvis")
 np <- import("numpy")
-source("data.R")
+source("data_corrected.R")
 theme_set(theme_minimal())
 set.seed(params$B)
 ```
