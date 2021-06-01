@@ -65,6 +65,8 @@ print("generate patch")
 ```
 
 ```{r}
+unlink(out_dir, force = TRUE)
+dir.create(out_dir, recursive = TRUE)
 np$save(file.path(out_dir, str_c("x-", 1, ".npy")), patch$x)
 np$save(file.path(out_dir, str_c("y-", 1, ".npy")), patch_y)
 write_sf(patch$meta, file.path(out_dir, str_c("geo-", 1, ".geojson")))
