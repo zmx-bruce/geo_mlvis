@@ -9,18 +9,19 @@ dependencies:
   - numpy
   - cudatoolkit=11.0
   - pytorch==1.8.0
+  - pandas
+  - scikit-learn 
   - pip
   - pip:
     - torch-scatter -f https://pytorch-geometric.com/whl/torch-1.8.0+cu111.html
     - torchvision==0.9.0
     - ogb==1.2.6
-    - torch-geometric
-    - pandas
-    - pillow
-    - pytz
-    - tqdm
-    - wilds
-    - scikit-learn
+    - torch-geometric==1.6.1
+    - pillow==7.2.0
+    - pytz==2020.4
+    - tqdm==4.53.0
+    - wilds==1.1.0
     - opencv-python
     - matplotlib
+    - outdated==0.2.0
 
