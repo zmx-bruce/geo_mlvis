@@ -55,6 +55,10 @@ generate_patch <- function(x_path, center, max_na = 0.2, subset_inputs=NULL) {
   x_raster <- read_subset(x_path, st_bbox(point))
   x <- as.array(x_raster)
   x <- x[,, subset_inputs]
+  if (is.na(mean(is.na(x)) || mean(is.na(x)) > max_na){
+      stop("Too many missing values.")
+  }else{x <- impute_na(x) %>%
+      equalize_input(range = c(-1, 1))}
   #if (mean(is.na(x)) < max_na) {
     #x <- impute_na(x) %>%
       #equalize_input(range = c(-1, 1))
