@@ -59,6 +59,7 @@ print("sample centers success")
 ```{r}
 vrt_path <- file.path(params$x_path)
 patch <- generate_patch(vrt_path, centers[1, ])
+patch_y <- label_mask(ys, patch$raster)
 print("generate one patch")
 ```
 ```{r}
@@ -66,4 +67,11 @@ unlink(params$out_dir, force = TRUE)
 dir.create(params$out_dir, recursive = TRUE)
 np$save(file.path(params$out_dir, str_c("x-", 1, ".npy")), patch$x)
 np$save(file.path(params$out_dir, str_c("y-", 1, ".npy")), patch_y)
+write_sf(patch$meta, file.path(params$out_dir, str_c("geo-", 1, ".geojson")))
+```
+
+```{r}
+centers<-cbind(centers,c(1:params$n_patches))
+colnames(centers)<-c("Longitude","Latitude","ID")
+write.csv(centers,file.path(params$out_dir, paste0("centers-", params$B, ".csv")))
 ```
