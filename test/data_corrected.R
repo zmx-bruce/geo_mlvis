@@ -56,18 +56,11 @@ generate_patch <- function(x_path, center, max_na = 0.2, subset_inputs=NULL) {
   x <- as.array(x_raster)
   x <- x[,, subset_inputs]
   if(!is.na(x)){
-  if(mean(is.na(x))<max_na){print("1")}else{stop("Too many missing values.")}
-  }else{stop("Too many missing values.")}
-    
-   #x <- impute_na(x) %>%
-      #equalize_input(range = c(-1, 1))
- 
-  #if (mean(is.na(x)) < max_na) {
-    #x <- impute_na(x) %>%
-      #equalize_input(range = c(-1, 1))
-  #} else {
-    #stop("Too many missing values.")
-  #}
+if(!is.na(x)){
+    if(mean(is.na(x))<0.2){x <- impute_na(x) %>%
+      equalize_input(range = c(-1, 1))}else{stop("Too many missing values.")}
+}else{stop("Too many missing values.")}
+      
   list(x = x, meta = point, raster = x_raster)
 }
 
