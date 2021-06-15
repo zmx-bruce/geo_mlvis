@@ -55,10 +55,6 @@ centers <- y %>%
   st_coordinates()
 unlink(params$out_dir, force = TRUE)
 dir.create(params$out_dir, recursive = TRUE)
-centers<-cbind(centers,c(1:params$n_patches))
-colnames(centers)<-c("Longitude","Latitude","ID")
-write.csv(centers,file.path(params$out_dir, paste0("centers-", params$B, ".csv")))
-
 x_path <- file.path(params$x_path)
 ```
 
@@ -66,19 +62,22 @@ x_path <- file.path(params$x_path)
 point <- st_point(centers[1,], dim = "XY") %>%
   st_buffer(0.1) %>%
   st_geometry()
+centers<-cbind(centers,c(1:params$n_patches))
+colnames(centers)<-c("Longitude","Latitude","ID")
+write.csv(centers,file.path(params$out_dir, paste0("centers-", params$B, ".csv")))
+```
+
+```{r}
 x_raster <- read_subset(x_path, st_bbox(point))
-subset_inputs <- c(1:11)
 x <- as.array(x_raster)
 np$save(file.path(params$out_dir, str_c("raster_mean-", 1, ".npy")), mean(is.na(x)))
 np$save(file.path(params$out_dir, str_c("raster-", 1, ".npy")), x)
-x <- x[,, subset_inputs]
-#if(!is.na(x)){
-    #if(mean(is.na(x))<0.2){x <- impute_na(x) %>%
-      #equalize_input(range = c(-1, 1))}else{stop("Too many missing values.")}
-#}else{stop("Too many missing values.")}
 
-x <- impute_na(x) %>%
-      equalize_input(range = c(-1, 1))
+if(!all(is.na(x))){
+    if(mean(is.na(x))<0.2){x <- impute_na(x) %>%
+      equalize_input(range = c(-1, 1))}else{stop("Too many missing values.")}
+}else{stop("Too many missing values.")}
+
       
 patch<-list(x = x, meta = point, raster = x_raster)
 ```
