@@ -53,44 +53,16 @@ Get sampling locations.
 centers <- y %>%
   st_sample(params$n_patches, type = "random", by_polygon = FALSE) %>%
   st_coordinates()
-unlink(params$out_dir, force = TRUE)
-dir.create(params$out_dir, recursive = TRUE)
 x_path <- file.path(params$x_path)
 ```
 
 ```{r}
-point <- st_point(centers[1,], dim = "XY") %>%
-  st_buffer(0.1) %>%
-  st_geometry()
+write_patches(x_path, ys, centers, params$out_dir,params$B)
+```
+
+```{r}
 centers<-cbind(centers,c(1:params$n_patches))
 colnames(centers)<-c("Longitude","Latitude","ID")
 write.csv(centers,file.path(params$out_dir, paste0("centers-", params$B, ".csv")))
 ```
 
-```{r}
-subset_inputs <- c(1:7,9:11)
-x_raster <- read_subset(x_path, st_bbox(point))
-x <- as.array(x_raster)
-x <- x[,, subset_inputs]
-np$save(file.path(params$out_dir, str_c("raster_mean-", 1, ".npy")), mean(is.na(x)))
-np$save(file.path(params$out_dir, str_c("raster-", 1, ".npy")), x)
-
-if(!all(is.na(x))){
-    if(mean(is.na(x))<0.2){x <- impute_na(x) %>%
-      equalize_input(range = c(-1, 1))}else{stop("Too many missing values.")}
-}else{stop("Too many missing values.")}
-
-      
-patch<-list(x = x, meta = point, raster = x_raster)
-```
-
-```{r}
-patch_y <- label_mask(ys, patch$raster)
-```
-
-```{r}
-
-np$save(file.path(params$out_dir, str_c("x-", 1, ".npy")), patch$x)
-np$save(file.path(params$out_dir, str_c("y-", 1, ".npy")), patch_y)
-write_sf(patch$meta, file.path(params$out_dir, str_c("geo-", 1, ".geojson")))
-```
