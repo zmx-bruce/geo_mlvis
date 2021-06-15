@@ -68,8 +68,10 @@ write.csv(centers,file.path(params$out_dir, paste0("centers-", params$B, ".csv")
 ```
 
 ```{r}
+subset_inputs <- c(1:7,9:11)
 x_raster <- read_subset(x_path, st_bbox(point))
 x <- as.array(x_raster)
+x <- x[,, subset_inputs]
 np$save(file.path(params$out_dir, str_c("raster_mean-", 1, ".npy")), mean(is.na(x)))
 np$save(file.path(params$out_dir, str_c("raster-", 1, ".npy")), x)
 
