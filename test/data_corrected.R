@@ -99,7 +99,7 @@ label_mask <- function(ys, x_raster) {
 #' @importFrom stringr str_c
 #' @importFrom reticulate import
 #' @export
-write_patches <- function(x_path, ys, centers, out_dir) {
+write_patches <- function(x_path, ys, centers, out_dir,B) {
   unlink(out_dir, force = TRUE)
   dir.create(out_dir, recursive = TRUE)
 
@@ -111,9 +111,9 @@ write_patches <- function(x_path, ys, centers, out_dir) {
     if (is.na(y) || is.na(patch)) next
 
     # save results
-    np$save(file.path(out_dir, str_c("x-", j, ".npy")), patch$x)
-    np$save(file.path(out_dir, str_c("y-", j, ".npy")), y)
-    write_sf(patch$meta, file.path(out_dir, str_c("geo-", j, ".geojson")))
+    np$save(file.path(out_dir, str_c("x-", B,"-",j, ".npy")), patch$x)
+    np$save(file.path(out_dir, str_c("y-", B,"-",j, ".npy")), y)
+    write_sf(patch$meta, file.path(out_dir, str_c("geo-", B,"-",j, ".geojson")))
     j <- j + 1
   }
 }
