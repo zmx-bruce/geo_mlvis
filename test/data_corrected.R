@@ -29,7 +29,7 @@ read_subset <- function(x_path, te, band_names = NULL) {
     gdalbuildvrt(x_path, tmp, te = te)
     result <- brick(tmp)
     if (is.null(band_names)) {
-      names(result) <- c("B1", "B2", "B3", "B4", "B5", "B6", "B7", "BQA","elevation", "slope")
+      names(result) <- c("B1", "B2", "B3", "B4", "B5", "B6", "B7","B8", "BQA","elevation", "slope")
     }
 
     # remove outliers and return
