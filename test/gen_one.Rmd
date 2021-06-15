@@ -53,7 +53,12 @@ Get sampling locations.
 centers <- y %>%
   st_sample(params$n_patches, type = "random", by_polygon = FALSE) %>%
   st_coordinates()
-colnames(centers) <- c("Longitude", "Latitude")
+unlink(params$out_dir, force = TRUE)
+dir.create(params$out_dir, recursive = TRUE)
+centers<-cbind(centers,c(1:params$n_patches))
+colnames(centers)<-c("Longitude","Latitude","ID")
+write.csv(centers,file.path(params$out_dir, paste0("centers-", params$B, ".csv")))
+
 x_path <- file.path(params$x_path)
 ```
 
@@ -64,6 +69,8 @@ point <- st_point(centers[1,], dim = "XY") %>%
 x_raster <- read_subset(x_path, st_bbox(point))
 subset_inputs <- c(1:11)
 x <- as.array(x_raster)
+np$save(file.path(params$out_dir, str_c("raster_mean-", 1, ".npy")), mean(is.na(x)))
+np$save(file.path(params$out_dir, str_c("raster-", 1, ".npy")), x)
 x <- x[,, subset_inputs]
 #if(!is.na(x)){
     #if(mean(is.na(x))<0.2){x <- impute_na(x) %>%
@@ -81,15 +88,8 @@ patch_y <- label_mask(ys, patch$raster)
 ```
 
 ```{r}
-unlink(params$out_dir, force = TRUE)
-dir.create(params$out_dir, recursive = TRUE)
+
 np$save(file.path(params$out_dir, str_c("x-", 1, ".npy")), patch$x)
 np$save(file.path(params$out_dir, str_c("y-", 1, ".npy")), patch_y)
 write_sf(patch$meta, file.path(params$out_dir, str_c("geo-", 1, ".geojson")))
-```
-
-```{r}
-centers<-cbind(centers,c(1:params$n_patches))
-colnames(centers)<-c("Longitude","Latitude","ID")
-write.csv(centers,file.path(params$out_dir, paste0("centers-", params$B, ".csv")))
 ```
