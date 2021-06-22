@@ -71,5 +71,10 @@ center_save<-data.frame()
 write_patches(vrt_path, ys, centers, center_save,params$out_dir,params$B)
 center_save<-cbind(center_save,c(1:dim(center_save)[1]))
 colnames(center_save)<-c("Longitude","Latitude","ID")
+write.csv(center_save,file.path(params$out_dir, paste0("center_save-", params$B, ".csv")))
+
+centers<-cbind(centers,c(1:params$n_patches))
+colnames(centers)<-c("Longitude","Latitude","ID")
 write.csv(centers,file.path(params$out_dir, paste0("centers-", params$B, ".csv")))
+
 ```
