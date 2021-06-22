@@ -58,7 +58,24 @@ colnames(centers) <- c("Longitude", "Latitude")
 ```{r}
 vrt_path <- file.path(params$x_path)
 ys <- y %>% split(.$Glaciers)
-patch <- generate_patch(vrt_path, centers[1, ])
+```
+
+```{r}
+point <- st_point(centers[1,], dim = "XY") %>%
+    st_buffer(0.1) %>%
+    st_geometry()
+x_raster <- read_subset(vrt_path, st_bbox(point))
+x <- as.array(x_raster)
+subset_inputs <- c(1:7,9:11)
+x <- x[,, subset_inputs]
+
+if(!is.na(x)){
+    if(mean(is.na(x))<0.2){x <- impute_na(x) %>%
+      equalize_input(range = c(-1, 1))}else{stop("Too many missing values.")}
+}else{stop("Too many missing values.")}
+      
+patch<-list(x = x, meta = point, raster = x_raster)
+    
 patch_y <- label_mask(ys, patch$raster)
 ```
 
