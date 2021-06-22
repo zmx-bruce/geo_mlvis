@@ -68,7 +68,9 @@ x_raster <- read_subset(vrt_path, st_bbox(point))
 x <- as.array(x_raster)
 subset_inputs <- c(1:7,9:11)
 x <- x[,, subset_inputs]
+```
 
+```{r}
 if(!is.na(x)){
     if(mean(is.na(x))<0.2){x <- impute_na(x) %>%
       equalize_input(range = c(-1, 1))}else{stop("Too many missing values.")}
