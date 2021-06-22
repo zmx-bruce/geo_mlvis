@@ -62,13 +62,14 @@ ys <- y %>% split(.$Glaciers)
 
 ```{r}
 patch <- generate_patch(vrt_path, centers[1, ])
-patch_y <- label_mask(ys, patch$raster)
+patch_y <- label_mask(ys, patch$raster,center_save)
 ```
 Write all results.
 
 ```{r}
-write_patches(vrt_path, ys, centers, params$out_dir,params$B)
-centers<-cbind(centers,c(1:params$n_patches))
-colnames(centers)<-c("Longitude","Latitude","ID")
+center_save<-data.frame()
+write_patches(vrt_path, ys, centers, center_save,params$out_dir,params$B)
+center_save<-cbind(center_save,c(1:dim(center_save)[1]))
+colnames(center_save)<-c("Longitude","Latitude","ID")
 write.csv(centers,file.path(params$out_dir, paste0("centers-", params$B, ".csv")))
 ```
