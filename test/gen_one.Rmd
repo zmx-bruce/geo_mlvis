@@ -84,9 +84,9 @@ patch_y <- label_mask(ys, patch$raster)
 ```{r}
 j=1
 dir.create(params$out_dir, recursive = TRUE)
-np$save(file.path(params$out_dir, str_c("x-", B,"-",j, ".npy")), patch$x)
-np$save(file.path(params$out_dir, str_c("y-", B,"-",j, ".npy")), patch_y)
-write_sf(patch$meta, file.path(params$out_dir, str_c("geo-", B,"-",j, ".geojson")))
+np$save(file.path(params$out_dir, str_c("x-", params$B,"-",j, ".npy")), patch$x)
+np$save(file.path(params$out_dir, str_c("y-", params$B,"-",j, ".npy")), patch_y)
+write_sf(patch$meta, file.path(params$out_dir, str_c("geo-", params$B,"-",j, ".geojson")))
 ```
 Write all results.
 
