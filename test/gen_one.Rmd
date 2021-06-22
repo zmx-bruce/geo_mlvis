@@ -61,13 +61,14 @@ ys <- y %>% split(.$Glaciers)
 ```
 
 ```{r}
-patch <- generate_patch(vrt_path, centers[1, ])
-patch_y <- label_mask(ys, patch$raster,center_save)
+center_save<-data.frame()
+patch <- generate_patch(vrt_path, centers[1, ],center_save)
+patch_y <- label_mask(ys, patch$raster)
 ```
 Write all results.
 
 ```{r}
-center_save<-data.frame()
+
 write_patches(vrt_path, ys, centers, center_save,params$out_dir,params$B)
 center_save<-cbind(center_save,c(1:dim(center_save)[1]))
 colnames(center_save)<-c("Longitude","Latitude","ID")
