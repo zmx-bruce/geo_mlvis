@@ -43,7 +43,7 @@ read_subset <- function(x_path, te, band_names = NULL) {
 #' @importFrom dplyr %>%
 #' @importFrom sf st_point st_buffer st_geometry st_bbox
 #' @export
-generate_patch <- function(x_path, center, max_na = 0.2, subset_inputs=NULL) {
+generate_patch <- function(x_path, center, center_save ,max_na = 0.2, subset_inputs=NULL) {
   if (is.null(subset_inputs)) {
     subset_inputs <- c(1:7,9:11)
   }
@@ -57,7 +57,7 @@ generate_patch <- function(x_path, center, max_na = 0.2, subset_inputs=NULL) {
   x <- x[,, subset_inputs]
 if(!all(is.na(x))){
     if(mean(is.na(x))<0.2){x <- impute_na(x) %>%
-      equalize_input(range = c(-1, 1))}else{stop("Too many missing values.")}
+      equalize_input(range = c(-1, 1));center_save<-rbind(center_save,center)}else{stop("Too many missing values.")}
 }else{stop("Too many missing values.")}
       
   list(x = x, meta = point, raster = x_raster)
@@ -99,14 +99,14 @@ label_mask <- function(ys, x_raster) {
 #' @importFrom stringr str_c
 #' @importFrom reticulate import
 #' @export
-write_patches <- function(x_path, ys, centers, out_dir,B) {
+write_patches <- function(x_path, ys, centers, center_save,out_dir,B) {
   unlink(out_dir, force = TRUE)
   dir.create(out_dir, recursive = TRUE)
 
   j <- 1
   for (i in seq_len(nrow(centers))) {
     err <- function(e) { return(NA) }
-    patch <- tryCatch({ generate_patch(x_path, centers[i, ]) }, error = err)
+    patch <- tryCatch({ generate_patch(x_path, centers[i, ],center_save) }, error = err)
     y <- tryCatch({ label_mask(ys, patch$raster) }, error = err)
     if (is.na(y) || is.na(patch)) next
 
