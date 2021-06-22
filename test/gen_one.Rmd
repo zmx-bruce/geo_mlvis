@@ -81,10 +81,17 @@ patch<-list(x = x, meta = point, raster = x_raster)
 patch_y <- label_mask(ys, patch$raster)
 ```
 
+```{r}
+j=1
+dir.create(out_dir, recursive = TRUE)
+np$save(file.path(out_dir, str_c("x-", B,"-",j, ".npy")), patch$x)
+np$save(file.path(out_dir, str_c("y-", B,"-",j, ".npy")), patch_y)
+write_sf(patch$meta, file.path(out_dir, str_c("geo-", B,"-",j, ".geojson")))
+```
 Write all results.
 
 ```{r}
-write_patches(vrt_path, ys, centers, params$out_dir,params$B)
+#write_patches(vrt_path, ys, centers, params$out_dir,params$B)
 centers<-cbind(centers,c(1:params$n_patches))
 colnames(centers)<-c("Longitude","Latitude","ID")
 write.csv(centers,file.path(params$out_dir, paste0("centers-", params$B, ".csv")))
