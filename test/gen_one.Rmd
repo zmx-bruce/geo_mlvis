@@ -61,37 +61,13 @@ ys <- y %>% split(.$Glaciers)
 ```
 
 ```{r}
-point <- st_point(centers[1,], dim = "XY") %>%
-    st_buffer(0.1) %>%
-    st_geometry()
-x_raster <- read_subset(vrt_path, st_bbox(point))
-x <- as.array(x_raster)
-subset_inputs <- c(1:7,9:11)
-x <- x[,, subset_inputs]
-```
-
-```{r}
-if(!all(is.na(x))){
-    if(mean(is.na(x))<0.2){x <- impute_na(x) %>%
-      equalize_input(range = c(-1, 1))}else{stop("Too many missing values.")}
-}else{stop("Too many missing values.")}
-      
-patch<-list(x = x, meta = point, raster = x_raster)
-    
+patch <- generate_patch(vrt_path, centers[1, ])
 patch_y <- label_mask(ys, patch$raster)
-```
-
-```{r}
-j=1
-dir.create(params$out_dir, recursive = TRUE)
-np$save(file.path(params$out_dir, str_c("x-", params$B,"-",j, ".npy")), patch$x)
-np$save(file.path(params$out_dir, str_c("y-", params$B,"-",j, ".npy")), patch_y)
-write_sf(patch$meta, file.path(params$out_dir, str_c("geo-", params$B,"-",j, ".geojson")))
 ```
 Write all results.
 
 ```{r}
-#write_patches(vrt_path, ys, centers, params$out_dir,params$B)
+write_patches(vrt_path, ys, centers, params$out_dir,params$B)
 centers<-cbind(centers,c(1:params$n_patches))
 colnames(centers)<-c("Longitude","Latitude","ID")
 write.csv(centers,file.path(params$out_dir, paste0("centers-", params$B, ".csv")))
