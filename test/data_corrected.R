@@ -123,9 +123,9 @@ write_patches <- function(x_path, ys, centers,out_dir,B) {
     write_sf(patch$meta, file.path(out_dir, str_c("geo-", B,"-",j, ".geojson")))
     j <- j + 1
   }
-    center_save<-cbind(centers,c(1:dim(center_save)[1]))
-    colnames(center_save)<-c("Longitude","Latitude","ID")
-    write.csv(center_save,file.path(params$out_dir, paste0("center_save-", params$B, ".csv")))
+    #center_save<-cbind(centers,c(1:dim(center_save)[1]))
+    #colnames(center_save)<-c("Longitude","Latitude","ID")
+    write.csv(center_save,file.path(out_dir, paste0("center_save-", params$B, ".csv")))
 }
 
 
