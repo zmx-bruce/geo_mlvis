@@ -113,7 +113,7 @@ write_patches <- function(x_path, ys, centers,out_dir,B) {
   j <- 1
   for (i in seq_len(nrow(centers))) {
     err <- function(e) { return(NA) }
-    patch <- tryCatch({ generate_patch(x_path, centers[i, ]);center_save<-rbind(center_save,centers[i,])}, error = err)
+    result<- tryCatch({ patch<-generate_patch(x_path, centers[i, ]);center_save<-rbind(center_save,centers[i,])}, error = err)
     y <- tryCatch({ label_mask(ys, patch$raster) }, error = err)
     if (is.na(y) || is.na(patch)) next
 
