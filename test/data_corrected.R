@@ -58,7 +58,7 @@ generate_patch <- function(x_path, center, center_save ,max_na = 0.2, subset_inp
   if (mean(is.na(x)) < max_na) {
     x <- impute_na(x) %>%
       equalize_input(range = c(-1, 1));
-    center_save<-rbind(center_save,center)
+    center_save<<-rbind(center_save,center)
   } else {
     stop("Too many missing values.")
   }
