@@ -52,7 +52,7 @@ ds = {
 # In[ ]:
 
 
-from train import predictions
+from train_test import predictions
 
 predictions(model, ds["train"], Path(args["out_dir"]+"/"+"train"),args["device"])
 predictions(model, ds["test"], Path(args["out_dir"]+"/"+"test"), args["device"])
