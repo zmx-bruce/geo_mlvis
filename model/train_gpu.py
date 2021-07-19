@@ -31,8 +31,8 @@ from torch.utils.data import DataLoader
 
 path=Path('npy/test/processed')
 paths = {
-    "x": list(path.glob("x-0-1*")),
-    "y": list(path.glob("y-0-1*"))
+    "x": list(path.glob("x-0-6*")),
+    "y": list(path.glob("y-0-6*"))
 }
 print('paths success')
 ds = GlacierDataset(paths["x"], paths["y"])
@@ -45,16 +45,20 @@ print('loader success')
 import torch.optim
 from unet import Unet
 from train import train_epoch
+print('load packages success')
 
 model = Unet(10, 3, 4, dropout=0.2).to(args["device"])
+print('model success')
+
 optimizer = torch.optim.Adam(model.parameters(), lr=args["lr"])
-print('model and optimize success')
-Loss_Total=[];Loss_Batch=[]
+print('optimize success')
+
+#Loss_Total=[];Loss_Batch=[]
 for epoch in range(args["epochs"]):
     print('epoch success')
-    l=train_epoch(model, loader, optimizer, args["device"], epoch)
-    Loss_Total.append(l[0])
-    Loss_Batch.append(l[1])
+    train_epoch(model, loader, optimizer, args["device"], epoch)
+    #Loss_Total.append(l[0])
+    #Loss_Batch.append(l[1])
     
 torch.save(model.state_dict(),"model.pt")
 
