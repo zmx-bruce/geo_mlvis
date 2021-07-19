@@ -15,8 +15,8 @@ import os
 
 
 args = {
-    "batch_size": 3, # make this bigger if you are not running on binder
-    "epochs": 2,
+    "batch_size": 10, # make this bigger if you are not running on binder
+    "epochs": 20,
     "lr": 0.0001,
     "device": "cuda" # set to "cuda" if GPU is available
 }
@@ -31,8 +31,8 @@ from torch.utils.data import DataLoader
 
 path=Path('npy/test/processed')
 paths = {
-    "x": list(path.glob("x-0-6*")),
-    "y": list(path.glob("y-0-6*"))
+    "x": list(path.glob("x*")),
+    "y": list(path.glob("y*"))
 }
 print('paths success')
 ds = GlacierDataset(paths["x"], paths["y"])
@@ -53,12 +53,12 @@ print('model success')
 optimizer = torch.optim.Adam(model.parameters(), lr=args["lr"])
 print('optimize success')
 
-#Loss_Total=[];Loss_Batch=[]
+Loss_Total=[];Loss_Batch=[]
 for epoch in range(args["epochs"]):
     print('epoch success')
     train_epoch(model, loader, optimizer, args["device"], epoch)
-    #Loss_Total.append(l[0])
-    #Loss_Batch.append(l[1])
+    Loss_Total.append(l[0])
+    Loss_Batch.append(l[1])
     
 torch.save(model.state_dict(),"model.pt")
 
