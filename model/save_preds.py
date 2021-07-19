@@ -47,8 +47,8 @@ ds = {
 
 from train import predictions
 
-predictions(model, ds["train"], args["out_dir"] / "train", args["device"])
-predictions(model, ds["test"], args["out_dir"] / "test", args["device"])
+predictions(model, ds["train"], Path(args["out_dir"]) / "train", args["device"])
+predictions(model, ds["test"], Path(args["out_dir"]) / "test", args["device"])
 
 
 # In[ ]:
