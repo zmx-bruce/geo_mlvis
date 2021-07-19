@@ -63,7 +63,8 @@ for epoch in range(args["epochs"]):
     Loss_Batch.append(l[1])
     
 torch.save(model.state_dict(),"model.pt")
-print(Loss_Total)
+print(Loss_Total[0])
+print(Loss_Batch[0])
 
 # In[ ]:
 
