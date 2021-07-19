@@ -16,7 +16,7 @@ import pickle
 
 args = {
     "batch_size": 5, # make this bigger if you are not running on binder
-    "epochs": 5,
+    "epochs": 10,
     "lr": 0.0001,
     "device": "cuda" # set to "cuda" if GPU is available
 }
@@ -57,14 +57,16 @@ Loss_Total=[];Loss_Batch=[];L=[]
 for epoch in range(args["epochs"]):
     print('epoch success')
     l=train_epoch(model, loader, optimizer, args["device"], epoch)
-    print(l[0]);print(l[1])
+    print('\n')
+    print(l[0]);
+    print('\n')
+    print(l[1])
+    print('\n')
     L.append(l)
     Loss_Total.append(l[0])
     Loss_Batch.append(l[1])
     
 torch.save(model.state_dict(),"model.pt")
-print(Loss_Total[0])
-print(Loss_Batch[0])
 
 # In[ ]:
 
