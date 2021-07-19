@@ -9,7 +9,7 @@ import tarfile
 from pathlib import Path
 from data import create_dir, download_data
 import os
-
+import pickle 
 
 # In[5]:
 
@@ -57,6 +57,7 @@ Loss_Total=[];Loss_Batch=[]
 for epoch in range(args["epochs"]):
     print('epoch success')
     l=train_epoch(model, loader, optimizer, args["device"], epoch)
+    print(l[0]);print(l[1])
     Loss_Total.append(l[0])
     Loss_Batch.append(l[1])
     
@@ -64,8 +65,6 @@ torch.save(model.state_dict(),"model.pt")
 
 # In[ ]:
 
-
-import pickle 
 filename='loss.pkl'
 with open(filename, 'wb') as f:  
     pickle.dump([Loss_Total,Loss_Batch], f)
