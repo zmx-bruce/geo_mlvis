@@ -36,8 +36,9 @@ paths = {
 }
 print('paths success')
 ds = GlacierDataset(paths["x"], paths["y"])
+print('ds success')
 loader = DataLoader(ds, batch_size=args["batch_size"], shuffle=True)
-
+print('loader success')
 # In[27]:
 
 
