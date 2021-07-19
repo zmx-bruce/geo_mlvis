@@ -15,8 +15,8 @@ import pickle
 
 
 args = {
-    "batch_size": 5, # make this bigger if you are not running on binder
-    "epochs": 10,
+    "batch_size": 10, # make this bigger if you are not running on binder
+    "epochs": 50,
     "lr": 0.0001,
     "device": "cuda" # set to "cuda" if GPU is available
 }
@@ -53,16 +53,11 @@ print('model success')
 optimizer = torch.optim.Adam(model.parameters(), lr=args["lr"])
 print('optimize success')
 
-Loss_Total=[];Loss_Batch=[];L=[]
+Loss_Total=[];Loss_Batch=[]
 for epoch in range(args["epochs"]):
     print('epoch success')
     l=train_epoch(model, loader, optimizer, args["device"], epoch)
-    print('\n')
-    print(l[0]);
-    print('\n')
-    print(l[1])
-    print('\n')
-    L.append(l)
+    #L.append(l)
     Loss_Total.append(l[0])
     Loss_Batch.append(l[1])
     
@@ -72,5 +67,4 @@ torch.save(model.state_dict(),"model.pt")
 
 filename='loss.pkl'
 with open(filename, 'wb') as f:  
-    pickle.dump([Loss_Total,Loss_Batch,L], f)
-
+    pickle.dump([Loss_Total,Loss_Batch], f)
