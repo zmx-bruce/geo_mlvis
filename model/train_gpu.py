@@ -68,5 +68,5 @@ torch.save(model.state_dict(),"model.pt")
 import pickle 
 filename='loss.pkl'
 with open(filename, 'wb') as f:  
-    pickle.dump([Loss_Toral,Loss_Batch], f)
+    pickle.dump([Loss_Total,Loss_Batch], f)
 
