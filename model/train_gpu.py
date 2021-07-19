@@ -7,7 +7,7 @@
 import urllib.request
 import tarfile
 from pathlib import Path
-from data import create_dir, download_data
+#from data import create_dir, download_data
 import os
 
 
