@@ -56,7 +56,7 @@ print('optimize success')
 Loss_Total=[];Loss_Batch=[]
 for epoch in range(args["epochs"]):
     print('epoch success')
-    train_epoch(model, loader, optimizer, args["device"], epoch)
+    l=train_epoch(model, loader, optimizer, args["device"], epoch)
     Loss_Total.append(l[0])
     Loss_Batch.append(l[1])
     
