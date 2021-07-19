@@ -105,11 +105,12 @@ def predictions(model, ds, out_dir, device):
 
     for i in range(len(ds)):
         x, y = ds[i]
-        ix = re.search("[0-9]+", str(ds.x_paths[i])).group(0)
-        print(f"saving {i + 1}/{len(ds)}...", end="\r", flush=True)
+        result=re. findall(r"[0-9]+",str(ds.x_paths[i]))
+        i1=int(result[0]);i2=int(result[1])
+        print(f"saving {i2 + 1}/{len(ds)}...", end="\r", flush=True)
 
         with torch.no_grad():
             y_hat = model(x.unsqueeze(0).to(device))
-            np.save(out_dir / f"y_hat-{ix}.npy", y_hat.cpu()[0])
-            np.save(out_dir / f"y-{ix}.npy", y)
-            np.save(out_dir / f"x-{ix}.npy", x)
+            np.save(out_dir / f"y_hat-{i1}-{i2}.npy", y_hat.cpu()[0])
+            np.save(out_dir / f"y-{i1}-{i2}.npy", y)
+            np.save(out_dir / f"x-{i1}-{i2}.npy", x)
