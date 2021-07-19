@@ -53,19 +53,21 @@ print('model success')
 optimizer = torch.optim.Adam(model.parameters(), lr=args["lr"])
 print('optimize success')
 
-Loss_Total=[];Loss_Batch=[]
+Loss_Total=[];Loss_Batch=[];L=[]
 for epoch in range(args["epochs"]):
     print('epoch success')
     l=train_epoch(model, loader, optimizer, args["device"], epoch)
     print(l[0]);print(l[1])
+    L.append(l)
     Loss_Total.append(l[0])
     Loss_Batch.append(l[1])
     
 torch.save(model.state_dict(),"model.pt")
+print(Loss_Total)
 
 # In[ ]:
 
 filename='loss.pkl'
 with open(filename, 'wb') as f:  
-    pickle.dump([Loss_Total,Loss_Batch], f)
+    pickle.dump([Loss_Total,Loss_Batch,L], f)
 
