@@ -60,9 +60,9 @@ vrt_path <- file.path(params$x_path)
 ys <- y %>% split(.$Glaciers)
 patch <- generate_patch(vrt_path, centers[1, ])
 patch_y <- label_mask(ys, patch$raster)
-np$save(file.path(out_dir, str_c("x-", test, ".npy")), patch$x)
-np$save(file.path(out_dir, str_c("x_equal-", test, ".npy")), patch$x_equal)
-np$save(file.path(out_dir, str_c("y-", test, ".npy")), patch_y)
+np$save(file.path(out_dir, str_c("x-", test,B, ".npy")), patch$x)
+np$save(file.path(out_dir, str_c("x_equal-", test,B, ".npy")), patch$x_equal)
+np$save(file.path(out_dir, str_c("y-", test,B, ".npy")), patch_y)
 
 ```
 
