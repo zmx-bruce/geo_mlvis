@@ -57,12 +57,12 @@ generate_patch <- function(x_path, center, max_na = 0.2, subset_inputs=NULL) {
   x <- as.array(x_raster)
   x <- x[,, subset_inputs]
   if (mean(is.na(x)) < max_na) {
-    x <- impute_na(x) %>%
+    x_equal <- impute_na(x) %>%
       equalize_input(range = c(-1, 1))
   } else {
     stop("Too many missing values.")
   }
-  list(x = x, meta = point, raster = x_raster)
+  list(x = x, x_equal=x_equal ,meta = point, raster = x_raster)
 }
 
 #' Extract Label
