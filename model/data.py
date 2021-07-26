@@ -45,7 +45,7 @@ class GlacierDataset(Dataset):
     Indexing the i^th element returns the underlying image and the associated
     binary y
     """
-    def __init__(self, x_paths, y_paths, imsize=512):
+    def __init__(self, x_paths, y_paths, imsize=703):
         self.x_paths = x_paths
         self.y_paths = y_paths
         self.imsize = imsize
