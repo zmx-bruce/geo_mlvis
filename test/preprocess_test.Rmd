@@ -62,9 +62,9 @@ patch <- generate_patch(vrt_path, centers[1, ])
 patch_y <- label_mask(ys, patch$raster)
 out_dir<-params$out_dir
 dir.create(out_dir, recursive = TRUE)
-np$save(file.path(out_dir, str_c("x-test",B, ".npy")), patch$x)
-np$save(file.path(out_dir, str_c("x_equal-test",B, ".npy")), patch$x_equal)
-np$save(file.path(out_dir, str_c("y-test",B,".npy")), patch_y)
+np$save(file.path(out_dir, str_c("x-test",params$B, ".npy")), patch$x)
+np$save(file.path(out_dir, str_c("x_equal-test",params$B, ".npy")), patch$x_equal)
+np$save(file.path(out_dir, str_c("y-test",params$B,".npy")), patch_y)
 
 ```
 
