@@ -56,7 +56,7 @@ generate_patch <- function(x_path, center ,max_na = 0.2, subset_inputs=NULL) {
   x <- as.array(x_raster)
   x <- x[,, subset_inputs]
   if (mean(is.na(x)) < max_na) {
-    x <- impute_na(x) %>%
+    x_equal <- impute_na(x) %>%
       equalize_input(range = c(-1, 1))
   } else {
     stop("Too many missing values.")
@@ -67,7 +67,7 @@ generate_patch <- function(x_path, center ,max_na = 0.2, subset_inputs=NULL) {
       #equalize_input(range = c(-1, 1));center_save<-rbind(center_save,center)}else{stop("Too many missing values.")}
 #}else{stop("Too many missing values.")}
       
-  list(x = x, meta = point, raster = x_raster)
+  list(x = x,x_equal=x_equal,meta = point, raster = x_raster)
 }
 
 #' Extract Label
@@ -120,13 +120,14 @@ write_patches <- function(x_path, ys, centers,out_dir,B) {
 
     # save results
     np$save(file.path(out_dir, str_c("x-", B,"-",j, ".npy")), patch$x)
+    np$save(file.path(out_dir, str_c("x-equal", B,"-",j, ".npy")), patch$x_equal)
     np$save(file.path(out_dir, str_c("y-", B,"-",j, ".npy")), y)
     write_sf(patch$meta, file.path(out_dir, str_c("geo-", B,"-",j, ".geojson")))
     j <- j + 1
   }
     #center_save<-cbind(centers,c(1:dim(center_save)[1]))
     #colnames(center_save)<-c("Longitude","Latitude","ID")
-    write.csv(center_save,file.path(out_dir, paste0("center_save-", params$B, ".csv")))
+    write.csv(center_save,file.path(out_dir, paste0("center_use-", params$B, ".csv")))
 }
 
 
