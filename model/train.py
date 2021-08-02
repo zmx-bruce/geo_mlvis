@@ -18,7 +18,7 @@ def l2_reg(params, device):
     return penalty
 
 
-def loss(y_hat, y, params, device, smooth=0.2, weights=[0.2, 0.6, 0.9], lambda_reg=0.0005):#[0.6, 0.9, 0.2]
+def loss(y_hat, y, params, device, smooth=0.2, weights=[0.6, 0.9, 0.2], lambda_reg=0.0005):#[0.6, 0.9, 0.2]
     penalty = l2_reg(params, device)
     dice = dice_loss(y_hat, y, device, weights, smooth)
     bce = bce_loss(y_hat, y, device, weights)
@@ -41,7 +41,7 @@ def bce_loss(y_hat, y, device, weights):
     return F.binary_cross_entropy(y_hat, y, weight=w_mat, reduction="mean")
 
 
-def dice_bce_loss(y_hat, y, device, smooth=0.2, weights=[0.2, 0.6, 0.9]):#[0.6, 0.9, 0.2]
+def dice_bce_loss(y_hat, y, device, smooth=0.2, weights=[0.6, 0.9, 0.2]):#[0.6, 0.9, 0.2]
     y_hat = y_hat.view(-1)
     y = y.view(-1)
     import pdb
