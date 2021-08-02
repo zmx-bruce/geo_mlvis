@@ -26,19 +26,21 @@ model = model.eval()
 
 
 # In[ ]:
-
+path="_npy/test/processed"
 
 from data import GlacierDataset
 from torch.utils.data import DataLoader
 paths = {}
-for split in ["train", "test"]:
+#for split in ["train", "test"]:
+for split in ["train"]:
     paths[split] = {}
     for v in ["x", "y"]:
-        paths[split][v] = list(Path(split+"_npy/test/processed").glob(v + "*"))
+       #paths[split][v] = list(Path(split+path).glob(v + "*"))
+        paths[split][v] = list(Path("npy").glob(v + "*"))
         paths[split][v].sort()
 ds = {
     "train": GlacierDataset(paths["train"]["x"], paths["train"]["y"]),
-    "test": GlacierDataset(paths["test"]["x"], paths["test"]["y"])
+    #"test": GlacierDataset(paths["test"]["x"], paths["test"]["y"])
 }
 
 
