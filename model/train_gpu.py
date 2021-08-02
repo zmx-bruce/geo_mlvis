@@ -16,7 +16,7 @@ import pickle
 
 args = {
     "batch_size": 1, # make this bigger if you are not running on binder
-    "epochs": 100,
+    "epochs": 15,
     "lr": 0.0001,
     "device": "cuda" # set to "cuda" if GPU is available
 }
