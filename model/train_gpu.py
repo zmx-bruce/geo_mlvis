@@ -29,8 +29,8 @@ args = {
 from data import GlacierDataset
 from torch.utils.data import DataLoader
 
-path=Path('npy/test/processed')
-#path=Path("npy")
+#path=Path('npy/test/processed')
+path=Path("npy")
 paths = {
     "x": list(path.glob("x*")),
     "y": list(path.glob("y*"))
