@@ -59,7 +59,7 @@ colnames(centers) <- c("Longitude", "Latitude")
 
 ```{r}
 vrt_path <- file.path(params$x_path)
-y <- y%>%mutate(Glaciers = factor(Glaciers, levels = c("Clean Ice", "Debris Covered")))
+y <- y%>%mutate(Glaciers = factor(Glaciers, levels = c("Clean Ice", "Debris covered")))
 ys <- y %>% split(.$Glaciers)
 
 #patch <- generate_patch(vrt_path, centers[1, ])
