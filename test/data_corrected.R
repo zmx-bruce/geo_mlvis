@@ -114,13 +114,15 @@ write_patches <- function(x_path, ys, centers,out_dir,B) {
   for (i in seq_len(nrow(centers))) {
     err <- function(e) { return(NA) }
     patch<- tryCatch({ generate_patch(x_path, centers[i, ])}, error = err)
-    if(!is.na(patch)){center_save<-rbind(center_save,centers[i,])}
+    #if(!is.na(patch)){center_save<-rbind(center_save,centers[i,])}
     y <- tryCatch({ label_mask(ys, patch$raster) }, error = err)
     if (is.na(y) || is.na(patch)) next
 
     # save results
+    center_save<-rbind(center_save,centers[i,])
     np$save(file.path(out_dir, str_c("x-", B,"-",j, ".npy")), patch$x)
     np$save(file.path(out_dir, str_c("y-", B,"-",j, ".npy")), y)
+    writeRaster(patch$raster,file.path(out_dir, str_c("raster-", B,"-",j, ".grd")) )
     write_sf(patch$meta, file.path(out_dir, str_c("geo-", B,"-",j, ".geojson")))
     j <- j + 1
   }
