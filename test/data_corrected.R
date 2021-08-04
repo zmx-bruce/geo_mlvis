@@ -84,7 +84,8 @@ label_mask <- function(ys, x_raster) {
 
   rasterize_ <- function(z, p) {
     if (nrow(z) == 0) {
-      return (array(0, c(dim(p)[1:2], 1)))
+      #return (array(0, c(dim(p)[1:2], 1)))
+       return (array(NA, c(dim(p)[1:2], 1)))
     }
     rasterize(z, p) %>%
       as.array()
