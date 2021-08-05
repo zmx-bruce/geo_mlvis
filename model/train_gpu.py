@@ -51,7 +51,7 @@ print('load packages success')
 model = Unet(10, 3, 4, dropout=0.2).to(args["device"])
 print('model success')
 
-optimizer = torch.optim.Adam(model.parameters(), lr=args["lr"])
+optimizer = torch.optim.SGB(model.parameters(), lr=args["lr"])#Adam
 print('optimize success')
 
 Loss_Total=[];Loss_Batch=[]
