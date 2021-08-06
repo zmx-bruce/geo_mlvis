@@ -1,33 +1,27 @@
 import urllib.request
 import tarfile
 from pathlib import Path
-from data import create_dir, download_data
+#from data import create_dir, download_data
 import os
 
 # setup directory structure for download
-data_dir = Path("/home/jovyan/data")
-process_dir = data_dir / "processed"
-create_dir(process_dir)
-
-# download processed data
-download_data(
-    "https://uwmadison.box.com/shared/static/d54agxzb5g8ivr7hkac8nygqd6nrgrqr.gz", 
-    process_dir / "train.tar.gz"
-)
+#data_dir = Path("/home/jovyan/data")
+#process_dir = data_dir / "processed"
+#create_dir(process_dir)
 
 args = {
-    "batch_size": 1, # make this bigger if you are not running on binder
-    "epochs": 50,
+    "batch_size": 20, # make this bigger if you are not running on binder
+    "epochs": 100,
     "lr": 0.0001,
     "device": "cpu" # set to "cuda" if GPU is available
 }
 
 from data import GlacierDataset
 from torch.utils.data import DataLoader
-
+path=Path("npy")
 paths = {
-    "x": list((process_dir / "train").glob("x*")),
-    "y": list((process_dir / "train").glob("y*"))
+    "x": list(path.glob("x*")),
+    "y": list(path.glob("y*"))
 }
 
 ds = GlacierDataset(paths["x"], paths["y"])
