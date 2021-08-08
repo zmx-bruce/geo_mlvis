@@ -11,9 +11,9 @@ import os
 
 args = {
     "batch_size": 20, # make this bigger if you are not running on binder
-    "epochs": 100,
+    "epochs": 60,
     "lr": 0.0001,
-    "device": "cpu" # set to "cuda" if GPU is available
+    "device": "gpu" # set to "cuda" if GPU is available
 }
 
 from data import GlacierDataset
