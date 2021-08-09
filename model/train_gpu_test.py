@@ -37,5 +37,5 @@ optimizer = torch.optim.Adam(model.parameters(), lr=args["lr"])
 for epoch in range(args["epochs"]):
     train_epoch(model, loader, optimizer, args["device"], epoch)
     
-torch.save(model.state_dict(), data_dir / "model.pt")
+torch.save(model.state_dict(), "model.pt")
 
