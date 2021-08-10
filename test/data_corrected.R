@@ -123,7 +123,7 @@ write_patches <- function(x_path, ys, centers,out_dir,B) {
     center_save<-rbind(center_save,centers[i,])
     np$save(file.path(out_dir, str_c("x-", B,"-",j, ".npy")), patch$x)
     np$save(file.path(out_dir, str_c("y-", B,"-",j, ".npy")), y)
-    #writeRaster(patch$raster,file.path(out_dir, str_c("raster-", B,"-",j, ".grd")) )
+    writeRaster(patch$raster,file.path(out_dir, str_c("raster-", B,"-",j, ".grd")) )
     write_sf(patch$meta, file.path(out_dir, str_c("geo-", B,"-",j, ".geojson")))
     j <- j + 1
   }
