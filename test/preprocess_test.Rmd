@@ -6,7 +6,7 @@ params:
   y_path: "https://uwmadison.box.com/shared/static/xmao8ovibuuqy71nezveylb35ugpq2fo.geojson"
   #y_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/glaciers.geojson"
   #basins: "https://uwmadison.box.com/shared/static/jkbnl83wbv6fon923qcmkpnn6jvon1og.csv"#full list of training basins
-  n_patches: 100
+  n_patches: 20
   basins: "https://uwmadison.box.com/shared/static/edr6a9oerybdksrl9r9msw16axusijqx.csv" # full list for test basins
   B: 1 
 ---
