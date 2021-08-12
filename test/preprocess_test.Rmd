@@ -2,8 +2,8 @@
 title: "Data Preparation"
 params:
   out_dir: "out_process"
-  x_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/corrected/region-corrected.vrt"
-  #x_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/hkh.vrt"
+  #x_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/corrected/region-corrected.vrt"
+  x_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/hkh.vrt"
   y_path: "https://uwmadison.box.com/shared/static/xmao8ovibuuqy71nezveylb35ugpq2fo.geojson"
   #y_path: "/vsicurl/https://glaciersblob.blob.core.windows.net/glaciersdata-kris/glaciers.geojson"
   #basins: "https://uwmadison.box.com/shared/static/jkbnl83wbv6fon923qcmkpnn6jvon1og.csv"#full list of training basins
