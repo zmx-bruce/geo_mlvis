@@ -15,9 +15,9 @@ import pickle
 
 
 args = {
-    "batch_size": 10, # make this bigger if you are not running on binder #over 1400 patches
+    "batch_size": 3, # make this bigger if you are not running on binder #over 1400 patches
     "epochs": 50,
-    "lr": 0.001, # For SGD lr is higher, Adam,
+    "lr": 0.0001, # For SGD lr is higher, Adam,
     "device": "cuda" # set to "cuda" if GPU is available
 }
 
@@ -51,7 +51,7 @@ print('load packages success')
 model = Unet(10, 3, 4, dropout=0.2).to(args["device"])
 print('model success')
 
-optimizer = torch.optim.SGD(model.parameters(), lr=args["lr"])#Adam
+optimizer = torch.optim.Adam(model.parameters(), lr=args["lr"])#Adam
 print('optimize success')
 
 Loss_Total=[];Loss_Batch=[]
