@@ -20,7 +20,7 @@ import torch
 from unet import Unet
 
 state = torch.load(Path("model.pt"), map_location=args["device"])
-model = Unet(10, 3, 4).to(args["device"])
+model = Unet(9, 3, 4).to(args["device"])
 model.load_state_dict(state)
 model = model.eval()
 
