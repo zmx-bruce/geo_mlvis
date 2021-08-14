@@ -15,6 +15,7 @@ class ConvBlock(nn.Module):
             self.dropout = nn.Dropout(p=dropout)
 
     def forward(self, x):
+        #nn.batchnorm
         x = F.relu(self.dropout(self.conv1(x)))
         x = F.relu(self.conv2(x))
         return x
