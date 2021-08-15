@@ -19,7 +19,7 @@ l_rate=float(sys.argv[2])
 
 args = {
     "batch_size": 5, # make this bigger if you are not running on binder #over 1400 patches
-    "epochs": 30,
+    "epochs": 50,
     "lr": l_rate, # For SGD lr is higher, Adam,
     "device": "cuda" # set to "cuda" if GPU is available
 }
@@ -51,7 +51,7 @@ from unet import Unet
 from train import train_epoch
 print('load packages success')
 
-model = Unet(9, 3, 4, dropout=0.2).to(args["device"])# decrease the drop out. download the ndvi, ndwi, 
+model = Unet(9, 3, 4, dropout=0.1).to(args["device"])# decrease the drop out. download the ndvi, ndwi, 
 print('model success')
 
 optimizer = torch.optim.eval(optimizer_type)(model.parameters(), lr=args["lr"])#Adam
