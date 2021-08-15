@@ -10,14 +10,17 @@ from pathlib import Path
 from data import create_dir, download_data
 import os
 import pickle 
+import sys
 
 # In[5]:
 
+optimizer_type=str(sys.argv[1])
+l_rate=float(sys.argv[2])
 
 args = {
-    "batch_size": 20, # make this bigger if you are not running on binder #over 1400 patches
-    "epochs": 80,
-    "lr": 0.0001, # For SGD lr is higher, Adam,
+    "batch_size": 5, # make this bigger if you are not running on binder #over 1400 patches
+    "epochs": 30,
+    "lr": l_rate, # For SGD lr is higher, Adam,
     "device": "cuda" # set to "cuda" if GPU is available
 }
 
@@ -51,7 +54,8 @@ print('load packages success')
 model = Unet(9, 3, 4, dropout=0.2).to(args["device"])# decrease the drop out. download the ndvi, ndwi, 
 print('model success')
 
-optimizer = torch.optim.Adam(model.parameters(), lr=args["lr"])#Adam
+optimizer = torch.optim.eval(optimizer_type)(model.parameters(), lr=args["lr"])#Adam
+#optimizer_type Adam or SGD
 print('optimize success')
 
 Loss_Total=[];Loss_Batch=[]
@@ -62,10 +66,10 @@ for epoch in range(args["epochs"]):
     Loss_Total.append(l[0])
     Loss_Batch.append(l[1])
     
-torch.save(model.state_dict(),"model.pt")
+torch.save(model.state_dict(),f"model_(optimizer_type)_(l_rate).pt")
 
 # In[ ]:
 
-filename='loss.pkl'
+filename=f'loss_(optimizer_type)_(l_rate).pkl'
 with open(filename, 'wb') as f:  
     pickle.dump([Loss_Total,Loss_Batch], f)
