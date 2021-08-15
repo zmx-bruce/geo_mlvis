@@ -68,10 +68,10 @@ for epoch in range(args["epochs"]):
     Loss_Total.append(l[0])
     Loss_Batch.append(l[1])
     
-torch.save(model.state_dict(),f"model_(optimizer_type)_(l_rate).pt")
+torch.save(model.state_dict(),f"model_{optimizer_type}_{l_rate}.pt")
 
 # In[ ]:
 
-filename=f'loss_(optimizer_type)_(l_rate).pkl'
+filename=f'loss_{optimizer_type}_{l_rate}.pkl'
 with open(filename, 'wb') as f:  
     pickle.dump([Loss_Total,Loss_Batch], f)
