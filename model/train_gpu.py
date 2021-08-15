@@ -14,7 +14,7 @@ import sys
 
 # In[5]:
 
-optimizer_type=eval(str(sys.argv[1]))
+optimizer_type=str(sys.argv[1])
 l_rate=float(sys.argv[2])
 
 args = {
@@ -53,8 +53,10 @@ print('load packages success')
 
 model = Unet(9, 3, 4, dropout=0.1).to(args["device"])# decrease the drop out. download the ndvi, ndwi, 
 print('model success')
-
-optimizer = torch.optim.optimizer_type(model.parameters(), lr=args["lr"])#Adam
+if optimizer_type=='Adam':
+    optimizer = torch.optim.Adam(model.parameters(), lr=args["lr"])#Adam
+if optimizer_type=='SGD':
+    optimizer = torch.optim.SGD(model.parameters(), lr=args["lr"])#SGD
 #optimizer_type Adam or SGD
 print('optimize success')
 
