@@ -57,7 +57,7 @@ class Unet(nn.Module):
         net_depth,
         dropout=0.2,
         spatial=False,
-        channel_layer=16,
+        channel_layer=32,
     ):
         super().__init__()
         self.downblocks = nn.ModuleList()
