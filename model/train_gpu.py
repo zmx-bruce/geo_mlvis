@@ -14,13 +14,13 @@ import sys
 
 # In[5]:
 
-optimizer_type=str(sys.argv[1])
-l_rate=float(sys.argv[2])
+#optimizer_type=str(sys.argv[1])
+#l_rate=float(sys.argv[2])
 
 args = {
-    "batch_size": 5, # make this bigger if you are not running on binder #over 1400 patches
+    "batch_size": 20, # make this bigger if you are not running on binder #over 1400 patches
     "epochs": 50,
-    "lr": l_rate, # For SGD lr is higher, Adam,
+    "lr": 0.001, # For SGD lr is higher, Adam,
     "device": "cuda" # set to "cuda" if GPU is available
 }
 
@@ -53,10 +53,10 @@ print('load packages success')
 
 model = Unet(9, 3, 4, dropout=0.1).to(args["device"])# decrease the drop out. download the ndvi, ndwi, 
 print('model success')
-if optimizer_type=='Adam':
-    optimizer = torch.optim.Adam(model.parameters(), lr=args["lr"])#Adam
-if optimizer_type=='SGD':
-    optimizer = torch.optim.SGD(model.parameters(), lr=args["lr"])#SGD
+#if optimizer_type=='Adam':
+optimizer = torch.optim.Adam(model.parameters(), lr=args["lr"])#Adam
+#if optimizer_type=='SGD':
+    #optimizer = torch.optim.SGD(model.parameters(), lr=args["lr"])#SGD
 #optimizer_type Adam or SGD
 print('optimize success')
 
@@ -68,10 +68,13 @@ for epoch in range(args["epochs"]):
     Loss_Total.append(l[0])
     Loss_Batch.append(l[1])
     
-torch.save(model.state_dict(),f"model_{optimizer_type}_{l_rate}.pt")
+#torch.save(model.state_dict(),f"model_{optimizer_type}_{l_rate}.pt")
+torch.save(model.state_dict(),f"model.pt")
+
 
 # In[ ]:
 
-filename=f'loss_{optimizer_type}_{l_rate}.pkl'
+#filename=f'loss_{optimizer_type}_{l_rate}.pkl'
+filename=f'loss.pkl'
 with open(filename, 'wb') as f:  
     pickle.dump([Loss_Total,Loss_Batch], f)
