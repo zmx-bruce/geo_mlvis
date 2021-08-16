@@ -8,7 +8,7 @@ equalize_input <- function(x, ...) {
         cur_layer <- x[,, l]
         cur_layer <- cur_layer - min(cur_layer)
         cur_layer <- cur_layer / max(cur_layer)
-        result[,, l] <- EBImage::equalize(cur_layer,...)#levels=1000
+        result[,, l] <- EBImage::equalize(cur_layer,levels = 1024,...)#levels=1000
     }
 
     result
