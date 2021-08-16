@@ -19,7 +19,7 @@ import sys
 
 args = {
     "batch_size": 20, # make this bigger if you are not running on binder #over 1400 patches
-    "epochs": 50,
+    "epochs": 75,
     "lr": 0.001, # For SGD lr is higher, Adam,
     "device": "cuda" # set to "cuda" if GPU is available
 }
