@@ -9,6 +9,9 @@ class ConvBlock(nn.Module):
         super().__init__()
         self.conv1 = nn.Conv2d(inchannels, outchannels, kernel_size=3, padding=padding)
         self.conv2 = nn.Conv2d(outchannels, outchannels, kernel_size=3, padding=padding)
+     
+        self.conv2_bn = nn.BatchNorm2d(outchannels)
+        
         if spatial:
             self.dropout = nn.Dropout2d(p=dropout)
         else:
@@ -17,7 +20,9 @@ class ConvBlock(nn.Module):
     def forward(self, x):
         #nn.batchnorm
         x = F.relu(self.dropout(self.conv1(x)))
-        x = F.relu(self.conv2(x))
+        #self.conv2_bn(,2)
+        #x = F.relu(self.conv2(x))
+        x = F.relu(self.conv2_bn(self.conv2(x)),2)
         return x
 
 
