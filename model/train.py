@@ -40,20 +40,6 @@ def bce_loss(y_hat, y, device, weights):
         w_mat[:, k, :, :] = weights[k]
     return F.binary_cross_entropy(y_hat, y, weight=w_mat, reduction="mean")
 
-
-def dice_bce_loss(y_hat, y, device, smooth=0.2, weights=[0.6, 0.9, 0.2]):#[0.6, 0.9, 0.2]
-    y_hat = y_hat.view(-1)
-    y = y.view(-1)
-    import pdb
-    pdb.set_trace()
-
-    intersection = (y_hat * y).sum()
-    dice_loss = 1 - (2. * intersection + smooth)/(y_hat.sum() + y.sum() + smooth)
-    BCE = F.binary_cross_entropy(y_hat, y, reduction="mean")
-    return BCE + dice_loss
-
-
-
 def train_epoch(model, loader, optimizer, device, epoch=0):
     loss_ = 0
     model.train()
