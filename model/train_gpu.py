@@ -51,7 +51,7 @@ from unet import Unet
 from train import train_epoch
 print('load packages success')
 
-model = Unet(9, 3, 4, dropout=0.1).to(args["device"])# decrease the drop out. download the ndvi, ndwi, 
+model = Unet(13, 3, 4, dropout=0.1).to(args["device"])# decrease the drop out. download the ndvi, ndwi, 
 print('model success')
 #if optimizer_type=='Adam':
 optimizer = torch.optim.Adam(model.parameters(), lr=args["lr"])#Adam
