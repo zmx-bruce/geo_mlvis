@@ -18,8 +18,8 @@ import sys
 #l_rate=float(sys.argv[2])
 
 args = {
-    "batch_size": 20, # make this bigger if you are not running on binder #over 1400 patches
-    "epochs": 75,
+    "batch_size": 1, # make this bigger if you are not running on binder #over 1400 patches
+    "epochs": 50,
     "lr": 0.001, # For SGD lr is higher, Adam,
     "device": "cuda" # set to "cuda" if GPU is available
 }
