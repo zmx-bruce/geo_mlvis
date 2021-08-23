@@ -2,6 +2,7 @@ import urllib.request
 import tarfile
 from pathlib import Path
 import os
+import pickle
 
 args = {
     "batch_size": 1, # make this bigger if you are not running on binder
@@ -34,3 +35,6 @@ for epoch in range(args["epochs"]):
     L.append(l)
     
 torch.save(model.state_dict(), "model.pt")
+
+with open('loss.pkl', 'wb') as f:  
+    pickle.dump(L, f)
