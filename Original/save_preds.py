@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 args = {
-    "device": "cpu", # set to "cuda" if gpu is available
+    "device": "cuda", # set to "cuda" if gpu is available
     "out_dir": Path("predictions")
 }
 
