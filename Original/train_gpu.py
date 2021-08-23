@@ -34,7 +34,9 @@ from train import train_epoch
 model = Unet(13, 3, 4, dropout=0.2).to(args["device"])
 optimizer = torch.optim.Adam(model.parameters(), lr=args["lr"])
 
+L=[]
 for epoch in range(args["epochs"]):
-    train_epoch(model, loader, optimizer, args["device"], epoch)
+    l=train_epoch(model, loader, optimizer, args["device"], epoch)
+    L.append(l)
     
 torch.save(model.state_dict(), "model.pt")
