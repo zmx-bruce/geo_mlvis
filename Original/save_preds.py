@@ -22,7 +22,7 @@ paths = {}
 for split in ["train"]:
     paths[split] = {}
     for v in ["x", "y"]:
-        paths[split][v] = list(Path("npy").glob(v + "*"))
+        paths[split][v] = list(Path("train").glob(v + "*"))
         paths[split][v].sort()
         
 ds = {
