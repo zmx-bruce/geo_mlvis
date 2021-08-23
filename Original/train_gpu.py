@@ -3,12 +3,6 @@ import tarfile
 from pathlib import Path
 import os
 
-# setup directory structure for download
-data_dir = Path("/home/jovyan/data")
-process_dir = data_dir / "processed"
-create_dir(process_dir)
-
-
 args = {
     "batch_size": 1, # make this bigger if you are not running on binder
     "epochs": 50,
