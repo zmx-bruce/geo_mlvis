@@ -41,19 +41,7 @@ def bce_loss(y_hat, y, device, weights):
     return F.binary_cross_entropy(y_hat, y, weight=w_mat, reduction="mean")
 
 
-def dice_bce_loss(y_hat, y, device, smooth=0.2, weights=[0.6, 0.9, 0.2]):
-    y_hat = y_hat.view(-1)
-    y = y.view(-1)
-    import pdb
-    pdb.set_trace()
-
-    intersection = (y_hat * y).sum()
-    dice_loss = 1 - (2. * intersection + smooth)/(y_hat.sum() + y.sum() + smooth)
-    BCE = F.binary_cross_entropy(y_hat, y, reduction="mean")
-    return BCE + dice_loss
-
-
-def train_epoch(model, loader, optimizer, device, epoch=0):
+def train_epoch(model, loader, optimizer, device, epoch=0, save_dir=None):
     loss_ = 0
     model.train()
     n = len(loader.dataset)
@@ -64,6 +52,12 @@ def train_epoch(model, loader, optimizer, device, epoch=0):
         # gradient step
         optimizer.zero_grad()
         y_hat = model(x)
+
+        if i % 50 == 0 and save_dir is not None:
+            np.save(save_dir / f"x-{epoch}-{i}-.npy", x.detach().cpu().numpy())
+            np.save(save_dir / f"y-{epoch}-{i}-.npy", y.detach().cpu().numpy())
+            np.save(save_dir / f"y_hat-{epoch}-{i}-.npy", y_hat.detach().cpu().numpy())
+
         l = loss(y_hat, y, model.parameters(), device)
         l.backward()
         optimizer.step()
@@ -108,6 +102,3 @@ def predictions(model, ds, out_dir, device):
             np.save(out_dir / f"y_hat-{ix}.npy", y_hat.cpu()[0])
             np.save(out_dir / f"y-{ix}.npy", y)
             np.save(out_dir / f"x-{ix}.npy", x)
-            
-            
-           

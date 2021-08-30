@@ -3,21 +3,25 @@ import tarfile
 from pathlib import Path
 import os
 import pickle
+import shutil
 
 args = {
     "batch_size": 1, # make this bigger if you are not running on binder
     "epochs": 50,
     "lr": 0.0001,
-    "device": "cuda" # set to "cuda" if GPU is available
+    "device": "cuda", # set to "cuda" if GPU is available
+    "base_dir": Path("/datadrive/glaciers/geo_ml/train/"),
+    "save_dir": Path("/datadrive/glaciers/geo_ml/logs/")
 }
+
+args["save_dir"].mkdir(parents = True, exist_ok=True)
 
 from data import GlacierDataset
 from torch.utils.data import DataLoader
-base_dir = Path("/datadrive/glaciers/geo_ml/train/")
 
 paths = {
-    "x": list(base_dir.glob("x*")),
-    "y": list((base_dir.glob("y*"))
+    "x": list(args["base_dir"].glob("x*")),
+    "y": list(args["base_dir"].glob("y*"))
 }
 
 ds = GlacierDataset(paths["x"], paths["y"])
@@ -27,12 +31,12 @@ import torch.optim
 from unet import Unet
 from train import train_epoch
 
-model = Unet(13, 3, 4, dropout=0.2).to(args["device"])
+model = Unet(10, 3, 4, dropout=0.2).to(args["device"])
 optimizer = torch.optim.Adam(model.parameters(), lr=args["lr"])
 
 L=[]
 for epoch in range(args["epochs"]):
-    l=train_epoch(model, loader, optimizer, args["device"], epoch)
+    l=train_epoch(model, loader, optimizer, args["device"], epoch, args["save_dir"])
     L.append(l)
 
 torch.save(model.state_dict(), "model.pt")
