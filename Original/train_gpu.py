@@ -13,10 +13,11 @@ args = {
 
 from data import GlacierDataset
 from torch.utils.data import DataLoader
+base_dir = Path("/datadrive/glaciers/geo_ml/train/")
 
 paths = {
-    "x": list((Path("npy")).glob("x*")),
-    "y": list((Path("npy")).glob("y*"))
+    "x": list(base_dir.glob("x*")),
+    "y": list((base_dir.glob("y*"))
 }
 
 ds = GlacierDataset(paths["x"], paths["y"])
@@ -33,8 +34,8 @@ L=[]
 for epoch in range(args["epochs"]):
     l=train_epoch(model, loader, optimizer, args["device"], epoch)
     L.append(l)
-    
+
 torch.save(model.state_dict(), "model.pt")
 
-with open('loss.pkl', 'wb') as f:  
+with open('loss.pkl', 'wb') as f:
     pickle.dump(L, f)
