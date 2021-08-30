@@ -23,6 +23,8 @@ def loss(y_hat, y, params, device, smooth=0.2, weights=[0.6, 0.9, 0.2], lambda_r
     dice = dice_loss(y_hat, y, device, weights, smooth)
     bce = bce_loss(y_hat, y, device, weights)
     return dice + bce + lambda_reg * penalty
+    #just keep bce
+    
 
 
 def dice_loss(y_hat, y, device, weights, smooth):
