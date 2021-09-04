@@ -46,8 +46,8 @@ def bce_loss(y_hat, y, device, weights):
 def train_epoch(model, loader, optimizer, device, epoch=0, save_dir=None):
     loss_ = 0
     model.train()
-    n = len(loader.dataset)
-    for i, (x, y) in enumerate(loader):
+    n = len(loader.dataset)#length of dataset, all 
+    for i, (x, y) in enumerate(loader):# len(loader)=len(loader.dataset)/batch_size
         x = x.to(device)
         y = y.to(device)
 
