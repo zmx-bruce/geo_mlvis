@@ -55,7 +55,7 @@ def train_epoch(model, loader, optimizer, device, epoch=0, save_dir=None):
         optimizer.zero_grad()
         y_hat = model(x)
 
-        if i % 50 == 0 and save_dir is not None:
+        if i % 100 == 0 and save_dir is not None:
             np.save(save_dir / f"x-{epoch}-{i}-.npy", x.detach().cpu().numpy())
             np.save(save_dir / f"y-{epoch}-{i}-.npy", y.detach().cpu().numpy())
             np.save(save_dir / f"y_hat-{epoch}-{i}-.npy", y_hat.detach().cpu().numpy())
