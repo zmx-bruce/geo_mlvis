@@ -10,7 +10,7 @@ args = {
     "epochs": 50,
     "lr": 0.0001,
     "device": "cuda", # set to "cuda" if GPU is available
-    "base_dir": Path("outprocess"),
+    "base_dir": Path("out_process"),
     "save_dir": Path("save_npy")
 }
 
