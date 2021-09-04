@@ -10,8 +10,8 @@ args = {
     "epochs": 50,
     "lr": 0.0001,
     "device": "cuda", # set to "cuda" if GPU is available
-    "base_dir": Path("/datadrive/glaciers/geo_ml/train/"),
-    "save_dir": Path("/datadrive/glaciers/geo_ml/logs/")
+    "base_dir": Path("/outprocess"),
+    "save_dir": Path("/save")
 }
 
 args["save_dir"].mkdir(parents = True, exist_ok=True)
@@ -31,7 +31,7 @@ import torch.optim
 from unet import Unet
 from train import train_epoch
 
-model = Unet(10, 3, 4, dropout=0.2).to(args["device"])
+model = Unet(9, 3, 4, dropout=0.2).to(args["device"])
 optimizer = torch.optim.Adam(model.parameters(), lr=args["lr"])
 
 L=[]
