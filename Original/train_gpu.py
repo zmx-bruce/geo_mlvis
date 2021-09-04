@@ -10,8 +10,8 @@ args = {
     "epochs": 50,
     "lr": 0.0001,
     "device": "cuda", # set to "cuda" if GPU is available
-    "base_dir": Path("/outprocess"),
-    "save_dir": Path("/save_npy")
+    "base_dir": Path("outprocess"),
+    "save_dir": Path("save_npy")
 }
 
 args["save_dir"].mkdir(parents = True, exist_ok=True)
