@@ -7,7 +7,7 @@ import shutil
 
 args = {
     "batch_size": 1, # make this bigger if you are not running on binder
-    "epochs": 25,
+    "epochs": 50,
     "lr": 0.0001,
     "device": "cuda", # set to "cuda" if GPU is available
     "base_dir": Path("out_process"),
