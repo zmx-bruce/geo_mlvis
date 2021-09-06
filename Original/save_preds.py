@@ -26,7 +26,7 @@ for split in ["train"]:
         paths[split][v].sort()
         
 ds = {
-    "train": GlacierDataset(paths["train"]["x"], paths["train"]["y"]),
+    "train": GlacierDataset(sorted(paths["train"]["x"]), sorted(paths["train"]["y"])),
     #"test": GlacierDataset(paths["test"]["x"], paths["test"]["y"])
 }
 
