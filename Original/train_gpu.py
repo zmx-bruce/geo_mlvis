@@ -25,7 +25,7 @@ paths = {
 }
 
 ds = GlacierDataset(paths["x"], paths["y"])
-loader = DataLoader(ds, batch_size=args["batch_size"], shuffle=True)
+loader = DataLoader(ds, batch_size=args["batch_size"], shuffle=False)
 
 import torch.optim
 from unet import Unet
