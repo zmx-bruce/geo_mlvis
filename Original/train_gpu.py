@@ -20,8 +20,8 @@ from data import GlacierDataset
 from torch.utils.data import DataLoader
 
 paths = {
-    "x": list(args["base_dir"].glob("x*")),
-    "y": list(args["base_dir"].glob("y*"))
+    "x": sorted(list(args["base_dir"].glob("x*"))),
+    "y": sorted(list(args["base_dir"].glob("y*")))
 }
 
 ds = GlacierDataset(paths["x"], paths["y"])
