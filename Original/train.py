@@ -109,4 +109,3 @@ def predictions(model, ds, out_dir, device):
             np.save(out_dir / f"y_hat-{i1}-{i2}.npy", y_hat.cpu()[0])
             np.save(out_dir / f"y-{i1}-{i2}.npy", y)
             np.save(out_dir / f"x-{i1}-{i2}.npy", x)
-©
