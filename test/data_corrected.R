@@ -8,7 +8,7 @@ equalize_input <- function(x, ...) {
         cur_layer <- x[,, l]
         cur_layer <- cur_layer - min(cur_layer)
         cur_layer <- cur_layer / max(cur_layer)
-        result[,, l] <- EBImage::equalize(cur_layer,levels = 1024,...)#levels=1000
+        result[,, l] <- EBImage::equalize(cur_layer,levels = 1024,...)#set higher level value to have a better equalization result
     }
 
     result
@@ -45,7 +45,7 @@ read_subset <- function(x_path, te, band_names = NULL) {
 #' @export
 generate_patch <- function(x_path, center ,max_na = 0.2, subset_inputs=NULL) {
   if (is.null(subset_inputs)) {
-    subset_inputs <- c(1:7,12:13)
+    subset_inputs <- c(1:7,12:13) #keep B1 to B7 and elevation, slope feature
   }
 
   point <- st_point(center, dim = "XY") %>%
