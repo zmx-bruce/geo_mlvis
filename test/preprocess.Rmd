@@ -33,7 +33,7 @@ library("tidyr")
 # setting up python environment
 use_condaenv("mappingvis")
 np <- import("numpy")
-source("data_corrected.R")
+source("data.R")
 theme_set(theme_minimal())
 set.seed(params$B)
 ```
